@@ -1,66 +1,72 @@
-"""Artsy matplotlib themes, applied as global rcParams."""
+"""Y2K cherry-coquette-grunge matplotlib themes, applied as global rcParams."""
 
 import matplotlib.pyplot as plt
 
 cycler = plt.cycler
 
 THEMES = {
-    "sunset": {
-        "figure.facecolor": "#2b1055",
-        "axes.facecolor": "#2b1055",
-        "axes.edgecolor": "#f8b195",
-        "axes.labelcolor": "#f8f1e7",
-        "text.color": "#f8f1e7",
-        "xtick.color": "#f8f1e7",
-        "ytick.color": "#f8f1e7",
-        "grid.color": "#f8b195",
+    # light, girly, 2000's coquette: bows, lace, blush
+    "coquette": {
+        "figure.facecolor": "#fdf1f5",
+        "axes.facecolor": "#fff8fa",
+        "axes.edgecolor": "#d8a7b1",
+        "axes.labelcolor": "#8a5b64",
+        "text.color": "#8a5b64",
+        "xtick.color": "#8a5b64",
+        "ytick.color": "#8a5b64",
+        "grid.color": "#eec9d2",
+        "grid.alpha": 0.6,
+        "axes.grid": True,
+        "font.family": "serif",
+        "axes.prop_cycle": cycler(
+            color=["#f4a6c6", "#f7cad0", "#e8b4bc", "#c9838f", "#fadadd"]
+        ),
+    },
+    # cherry-cola vintage: cream paper, deep cherry red, black
+    "cherry": {
+        "figure.facecolor": "#fff8ec",
+        "axes.facecolor": "#fffaf0",
+        "axes.edgecolor": "#1c1c1c",
+        "axes.labelcolor": "#1c1c1c",
+        "text.color": "#1c1c1c",
+        "xtick.color": "#1c1c1c",
+        "ytick.color": "#1c1c1c",
+        "grid.color": "#d2042d",
         "grid.alpha": 0.15,
         "axes.grid": True,
         "font.family": "serif",
         "axes.prop_cycle": cycler(
-            color=["#f67280", "#f8b195", "#c06c84", "#6c5b7b", "#355c7d"]
+            color=["#9e1b32", "#d2042d", "#1c1c1c", "#6e2c1e", "#c0c0c0"]
         ),
     },
-    "pastel": {
-        "figure.facecolor": "#fdf6f0",
-        "axes.facecolor": "#fdf6f0",
-        "axes.edgecolor": "#c9ada7",
-        "axes.labelcolor": "#4a4a4a",
-        "text.color": "#4a4a4a",
-        "xtick.color": "#4a4a4a",
-        "ytick.color": "#4a4a4a",
-        "grid.color": "#c9ada7",
-        "grid.alpha": 0.3,
-        "axes.grid": True,
-        "font.family": "sans-serif",
-        "axes.prop_cycle": cycler(
-            color=["#ffafcc", "#a2d2ff", "#bde0fe", "#cdb4db", "#ffc8dd"]
-        ),
-    },
-    "ink": {
-        "figure.facecolor": "#111111",
-        "axes.facecolor": "#111111",
-        "axes.edgecolor": "#eeeeee",
-        "axes.labelcolor": "#eeeeee",
-        "text.color": "#eeeeee",
-        "xtick.color": "#eeeeee",
-        "ytick.color": "#eeeeee",
-        "grid.color": "#555555",
-        "grid.alpha": 0.4,
+    # coach-jacket grunge: distressed charcoal, faded cherry, rust
+    "grunge": {
+        "figure.facecolor": "#171412",
+        "axes.facecolor": "#1e1a17",
+        "axes.edgecolor": "#e4ded0",
+        "axes.labelcolor": "#e4ded0",
+        "text.color": "#e4ded0",
+        "xtick.color": "#e4ded0",
+        "ytick.color": "#e4ded0",
+        "grid.color": "#6e2c1e",
+        "grid.alpha": 0.35,
         "axes.grid": True,
         "font.family": "monospace",
-        "axes.prop_cycle": cycler(color=["#ffffff", "#cccccc", "#999999"]),
+        "axes.prop_cycle": cycler(
+            color=["#c97c8b", "#8b0000", "#e4ded0", "#6e2c1e", "#a89f91"]
+        ),
     },
 }
 
 
-def use_style(name="sunset"):
-    """Apply an artsy theme globally, so all following plots pick it up.
+def use_style(name="cherry"):
+    """Apply a Y2K cherry-coquette-grunge theme globally to all following plots.
 
     Parameters
     ----------
     name : str
-        One of "sunset", "pastel", or "ink".
+        One of "coquette" (light, blush, lace), "cherry" (vintage cream +
+        cherry red), or "grunge" (distressed charcoal + faded cherry).
     """
     if name not in THEMES:
         raise ValueError(f"Unknown theme '{name}'. Choose from {list(THEMES)}")
