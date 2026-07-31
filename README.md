@@ -2,7 +2,7 @@
 
 this is a visualization library
 
-A tiny Python package that makes matplotlib plots look artsy — Y2K cherry-coquette-grunge, with almost no extra code.
+A tiny Python package that makes matplotlib plots look artsy — cherry-cola vintage, with almost no extra code.
 
 ## Install
 
@@ -16,19 +16,21 @@ pip install -e .
 import matplotlib.pyplot as plt
 import viz_library as vl
 
-vl.use_style("cherry")  # or "coquette", "grunge"
+vl.use_style()
 
 fig, ax = plt.subplots()
 vl.gradient_fill(ax, x, y)
+vl.lace_trim(ax)
+vl.buckle(ax)
 ```
 
 ## What's included
 
-- `use_style(name)` — applies a theme to all following plots:
-  - `"coquette"` — light, blush, lace (2000's, girly, soft)
-  - `"cherry"` — vintage cream paper with deep cherry red and black
-  - `"grunge"` — distressed charcoal with faded cherry and rust
+- `use_style()` — applies the cherry theme (vintage cream paper, deep cherry red, black) to all following plots.
 - `gradient_fill(ax, x, y, color, alpha)` — a line plot with a smooth gradient fill underneath.
-- `sparkle_line(ax, x, y, color, glitter, sparkles, seed)` — a line dusted with glitter star sparkles.
-- `rounded_bars(ax, x, heights, width, color, edge, radius)` — a bar chart with rounded tops and a bow-black outline.
+- `rounded_bars(ax, x, heights, width, color, edge, radius)` — a bar chart with rounded, glossy tops.
+- `stacked_bars(ax, x, series, colors, width)` — a stacked column chart from a list of value series.
+- `combo_chart(ax, x, bars, line, bar_color, line_color, width)` — a bar-and-line combo chart on a single shared y-axis.
 - `grain(ax, amount, color, alpha, seed)` — faint vintage film-grain speckle over an axes.
+- `lace_trim(ax, color, scallops, size)` — a scalloped lace trim along the bottom edge of an axes.
+- `buckle(ax, xy, width, height, color)` — a small belt-buckle glyph decoration above an axes.

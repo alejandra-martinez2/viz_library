@@ -1,9 +1,12 @@
-"""viz_library: Y2K cherry-coquette-grunge matplotlib plots, minimal effort."""
+"""viz_library: cherry-cola vintage matplotlib plots, minimal effort."""
 
-from .styles import THEMES, use_style
-from .effects import gradient_fill, sparkle_line, rounded_bars, grain
+from .styles import CHERRY, use_style
+from .effects import (
+    gradient_fill, rounded_bars, stacked_bars, combo_chart, grain, lace_trim, buckle,
+)
 
 __all__ = [
-    "THEMES", "use_style", "gradient_fill", "sparkle_line", "rounded_bars", "grain",
+    "CHERRY", "use_style", "gradient_fill", "rounded_bars", "stacked_bars",
+    "combo_chart", "grain", "lace_trim", "buckle",
 ]
-__version__ = "0.2.0"
+__version__ = "0.3.0"

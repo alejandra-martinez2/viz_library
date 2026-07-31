@@ -1,8 +1,8 @@
-"""Y2K cherry-coquette-grunge touches for any matplotlib axes."""
+"""Cherry-cola vintage touches for any matplotlib axes."""
 
 import numpy as np
 import matplotlib.colors as mcolors
-from matplotlib.patches import FancyBboxPatch, Polygon
+from matplotlib.patches import FancyBboxPatch, Polygon, Wedge
 
 
 def gradient_fill(ax, x, y, color="#d2042d", alpha=0.6):
@@ -28,24 +28,8 @@ def gradient_fill(ax, x, y, color="#d2042d", alpha=0.6):
     return line, im
 
 
-def sparkle_line(ax, x, y, color="#c9838f", glitter="#ffd700", sparkles=40, seed=0):
-    """Draw a line dusted with glitter-like star sparkles."""
-    x, y = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
-    line, = ax.plot(x, y, color=color, linewidth=2, zorder=2)
-
-    rng = np.random.default_rng(seed)
-    idx = rng.choice(len(x), size=min(sparkles, len(x)), replace=False)
-    sizes = rng.uniform(20, 90, size=idx.size)
-    alphas = rng.uniform(0.5, 1.0, size=idx.size)
-    ax.scatter(
-        x[idx], y[idx], s=sizes, marker="*", color=glitter,
-        edgecolors="#1c1c1c", linewidths=0.4, alpha=alphas, zorder=3,
-    )
-    return line
-
-
-def rounded_bars(ax, x, heights, width=0.6, color="#c9838f", edge="#1c1c1c", radius=0.05):
-    """Draw a coquette-style bar chart: rounded tops with a bow-black outline."""
+def rounded_bars(ax, x, heights, width=0.6, color="#9e1b32", edge="#1c1c1c", radius=0.05):
+    """Draw a bar chart with glossy, rounded cherry tops."""
     patches = []
     for xi, h in zip(x, heights):
         box = FancyBboxPatch(
@@ -60,6 +44,30 @@ def rounded_bars(ax, x, heights, width=0.6, color="#c9838f", edge="#1c1c1c", rad
     return patches
 
 
+def stacked_bars(ax, x, series, colors=None, width=0.6):
+    """Draw a stacked column chart from a list of equal-length value series."""
+    colors = colors or ["#9e1b32", "#d2042d", "#6e2c1e", "#c0c0c0"]
+    bottoms = np.zeros(len(x))
+    for i, values in enumerate(series):
+        values = np.asarray(values, dtype=float)
+        ax.bar(
+            x, values, bottom=bottoms, width=width,
+            color=colors[i % len(colors)], edgecolor="#1c1c1c", linewidth=0.8,
+        )
+        bottoms += values
+    ax.set_xlim(min(x) - width, max(x) + width)
+    ax.set_ylim(0, bottoms.max() * 1.15)
+    return bottoms
+
+
+def combo_chart(ax, x, bars, line, bar_color="#9e1b32", line_color="#1c1c1c", width=0.6):
+    """Draw a bar-and-line combo chart sharing a single y-axis."""
+    ax.bar(x, bars, width=width, color=bar_color, edgecolor="#1c1c1c", linewidth=0.8, zorder=2)
+    ax.plot(x, line, color=line_color, linewidth=2.5, marker="o", zorder=3)
+    ax.set_xlim(min(x) - width, max(x) + width)
+    ax.set_ylim(0, max(max(bars), max(line)) * 1.15)
+
+
 def grain(ax, amount=400, color="#1c1c1c", alpha=0.04, seed=0):
     """Scatter faint vintage film-grain speckle across the axes."""
     rng = np.random.default_rng(seed)
@@ -68,3 +76,30 @@ def grain(ax, amount=400, color="#1c1c1c", alpha=0.04, seed=0):
     ys = rng.uniform(*ylim, size=amount)
     sizes = rng.uniform(0.5, 3, size=amount)
     ax.scatter(xs, ys, s=sizes, color=color, alpha=alpha, zorder=10, linewidths=0)
+
+
+def lace_trim(ax, color="#9e1b32", scallops=16, size=0.03):
+    """Draw a scalloped lace trim hanging off the bottom edge of the axes."""
+    for i in range(scallops):
+        cx = (i + 0.5) / scallops
+        wedge = Wedge(
+            (cx, 0), size, 180, 360, transform=ax.transAxes,
+            facecolor="none", edgecolor=color, linewidth=1.2, zorder=5, clip_on=False,
+        )
+        ax.add_patch(wedge)
+
+
+def buckle(ax, xy=(0.06, 1.06), width=0.05, height=0.03, color="#1c1c1c"):
+    """Draw a small belt-buckle glyph above the axes."""
+    x0, y0 = xy
+    frame = FancyBboxPatch(
+        (x0 - width / 2, y0 - height / 2), width, height,
+        boxstyle="round,pad=0.002,rounding_size=0.01", transform=ax.transAxes,
+        facecolor="none", edgecolor=color, linewidth=1.6, zorder=6, clip_on=False,
+    )
+    ax.add_patch(frame)
+    ax.plot(
+        [x0, x0], [y0 - height / 2 - 0.01, y0 + height / 2 + 0.01],
+        color=color, linewidth=1.6, transform=ax.transAxes, clip_on=False, zorder=6,
+    )
+    return frame
