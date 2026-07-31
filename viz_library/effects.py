@@ -93,9 +93,9 @@ def lace_trim(ax, color="#9e1b32", scallops=24, size=0.024):
             (cx, -size * 1.6), size * 0.14, facecolor=color, edgecolor="none", **kw,
         ))
     ax.plot([0, 1], [-size * 2.1, -size * 2.1], color=color, linewidth=1, **kw)
-    ax.tick_params(axis="x", pad=size * 900)
+    ax.tick_params(axis="x", pad=size * 500)
     fig = ax.figure
-    fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, 0.24))
+    fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, 0.2))
 
 
 def buckle(ax, xy=(0.06, 1.06), width=0.05, height=0.03, color="#1c1c1c"):
