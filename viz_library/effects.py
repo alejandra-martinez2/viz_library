@@ -78,22 +78,24 @@ def grain(ax, amount=400, color="#1c1c1c", alpha=0.04, seed=0):
     ax.scatter(xs, ys, s=sizes, color=color, alpha=alpha, zorder=10, linewidths=0)
 
 
-def lace_trim(ax, color="#9e1b32", scallops=24, size=0.024, gap=0.015):
-    """Draw a layered scalloped lace trim hanging clear of the bottom axis."""
+def lace_trim(ax, color="#9e1b32", scallops=24, size=0.024):
+    """Draw a layered scalloped lace trim hanging off the bottom edge of the axes."""
     kw = dict(transform=ax.transAxes, clip_on=False, zorder=5)
     for i in range(scallops):
         cx = (i + 0.5) / scallops
         ax.add_patch(Wedge(
-            (cx, -gap), size, 180, 360, facecolor="none",
+            (cx, 0), size, 180, 360, facecolor="none",
             edgecolor=color, linewidth=1.2, **kw,
         ))
     for i in range(scallops * 2):
         cx = (i + 0.5) / (scallops * 2)
         ax.add_patch(Circle(
-            (cx, -gap - size * 1.6), size * 0.14, facecolor=color, edgecolor="none", **kw,
+            (cx, -size * 1.6), size * 0.14, facecolor=color, edgecolor="none", **kw,
         ))
-    y_base = -gap - size * 2.1
-    ax.plot([0, 1], [y_base, y_base], color=color, linewidth=1, **kw)
+    ax.plot([0, 1], [-size * 2.1, -size * 2.1], color=color, linewidth=1, **kw)
+    ax.tick_params(axis="x", pad=size * 900)
+    fig = ax.figure
+    fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, 0.24))
 
 
 def buckle(ax, xy=(0.06, 1.06), width=0.05, height=0.03, color="#1c1c1c"):
