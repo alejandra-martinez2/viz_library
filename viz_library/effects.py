@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.colors as mcolors
-from matplotlib.patches import FancyBboxPatch, Polygon, Wedge
+from matplotlib.patches import FancyBboxPatch, Polygon, Wedge, Circle
 
 
 def gradient_fill(ax, x, y, color="#d2042d", alpha=0.6):
@@ -78,28 +78,43 @@ def grain(ax, amount=400, color="#1c1c1c", alpha=0.04, seed=0):
     ax.scatter(xs, ys, s=sizes, color=color, alpha=alpha, zorder=10, linewidths=0)
 
 
-def lace_trim(ax, color="#9e1b32", scallops=16, size=0.03):
-    """Draw a scalloped lace trim hanging off the bottom edge of the axes."""
+def lace_trim(ax, color="#9e1b32", scallops=24, size=0.024):
+    """Draw a layered scalloped lace trim hanging off the bottom edge of the axes."""
+    kw = dict(transform=ax.transAxes, clip_on=False, zorder=5)
     for i in range(scallops):
         cx = (i + 0.5) / scallops
-        wedge = Wedge(
-            (cx, 0), size, 180, 360, transform=ax.transAxes,
-            facecolor="none", edgecolor=color, linewidth=1.2, zorder=5, clip_on=False,
-        )
-        ax.add_patch(wedge)
+        ax.add_patch(Wedge(
+            (cx, 0), size, 180, 360, facecolor="none",
+            edgecolor=color, linewidth=1.2, **kw,
+        ))
+    for i in range(scallops * 2):
+        cx = (i + 0.5) / (scallops * 2)
+        ax.add_patch(Circle(
+            (cx, -size * 1.6), size * 0.14, facecolor=color, edgecolor="none", **kw,
+        ))
+    ax.plot([0, 1], [-size * 2.1, -size * 2.1], color=color, linewidth=1, **kw)
 
 
-def buckle(ax, xy=(0.06, 1.06), width=0.05, height=0.03, color="#1c1c1c"):
-    """Draw a small belt-buckle glyph above the axes."""
+def buckle(ax, xy=(0.07, 1.07), width=0.055, height=0.035, color="#1c1c1c"):
+    """Draw a belt-buckle glyph: an oval frame, center bar, prong, and rivets."""
     x0, y0 = xy
+    kw = dict(transform=ax.transAxes, clip_on=False, zorder=6)
     frame = FancyBboxPatch(
         (x0 - width / 2, y0 - height / 2), width, height,
-        boxstyle="round,pad=0.002,rounding_size=0.01", transform=ax.transAxes,
-        facecolor="none", edgecolor=color, linewidth=1.6, zorder=6, clip_on=False,
+        boxstyle="round,pad=0.002,rounding_size=0.016",
+        facecolor="none", edgecolor=color, linewidth=1.8, **kw,
     )
     ax.add_patch(frame)
     ax.plot(
-        [x0, x0], [y0 - height / 2 - 0.01, y0 + height / 2 + 0.01],
-        color=color, linewidth=1.6, transform=ax.transAxes, clip_on=False, zorder=6,
+        [x0 - width / 2, x0 + width / 2], [y0, y0], color=color, linewidth=1.4, **kw,
     )
+    ax.plot(
+        [x0, x0 + width * 0.75], [y0, y0], color=color, linewidth=2.4,
+        solid_capstyle="round", **kw,
+    )
+    for side in (-1, 1):
+        ax.add_patch(Circle(
+            (x0 + side * width / 2, y0), width * 0.08,
+            facecolor=color, edgecolor="none", **kw,
+        ))
     return frame
